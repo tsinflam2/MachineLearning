@@ -1,0 +1,287 @@
+<!--<html>-->
+   <!--<body>-->
+
+      <!--<form action = "." method = "POST">-->
+         <!--<p>Please input TICKER: <br/> <input type = "text" name = "ticker" /></p>-->
+          <!--<p><input type = "submit" value = "submit" /></p>-->
+      <!--</form>-->
+
+   <!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Micro Stock Virtual Agent</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='progress_bar.js') }}"></script>
+  <style>
+    hr { background-color: black; height: 1px; border: 0; }
+
+    /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 800px;}
+
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;}
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Micro Stock Virtual Agent</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Projects</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container-fluid text-center">
+  <div class="row content">
+    <div class="col-sm-2 sidenav">
+        <div><h4>Author:</h4> Johnny <br/></div>
+        <p><a href="#"> <h4>Email:</h4> tsinflam2-c@my.cityu.edu.hk</a></p>
+    </div>
+    <div class="col-sm-8 text-left">
+      <h1>Welcome</h1>
+        <p>This is a <B>micro stock virtual agent </B>which applies machine learning to help you experience what machine learning is and what
+            it can do for you in the investing of the stock market. Let's try to input a TICKER (e.g. GOOGL) to check it out and hope
+            you enjoy it!
+        </p>
+      <center><img src="{{url_for('static', filename='ai.jpg')}}" class="img-circle" alt="A.I." width="304" height="236"/></center>
+      <hr>
+      <h3>Input TICKER:</h3>
+      <p>
+        <form action = "." method = "POST">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" name="ticker">
+            <div class="input-group-btn">
+              <button class="btn btn-default" type="submit" onclick="waitingDialog.show()">
+                <i class="glyphicon glyphicon-search"><b> Analyse!</b></i>
+              </button>
+            </div>
+          </div>
+          <hr>
+          <div class="well"><B>Technical Indicator</B>
+              <div class="checkbox">
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="10ma"> Show 10 SMA
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="100ma"> Show 100 SMA
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="250ma"> Show 250 SMA
+                </label>
+                <label class="checkbox-inline">
+                  <input type="checkbox" name="candlestick"> Show Candle Stick Chart
+                </label>
+              </div>
+          </div>
+
+          <div class="well"><B>Machine Learning Algorithm</B>
+            <div>
+              <label class="radio-inline"><input type="radio" name="chosen_learner" value="svr_learner" data-toggle="collapse" data-target="#intro_svm_regression">Linear Regression</label>
+
+              <div id="intro_svm_regression" class="collapse">
+                <br/>
+                <b>Intro to Linear Regression:</b><br/>
+                <p>
+                  Linear regression fits a line (or plane, or hyperplane) to the data set.
+                  It's a workhorse, simple and fast, but it may be overly simplistic for some problems.</p>
+                  <br>
+                  <h4>Features used:</h4>
+                  <ul class="list-unstyled">
+                    <ul>
+                      <li>Adjust Closing price</li>
+                      <li>HL_PCT (Explaination:(Adjust High - Adjust Low) / Adjust Low * 100)</li>
+                      <li>PCT_change (Explaination:(Adjust Low - Adjust Open) / Adjust Open * 100)</li>
+                      <li>Adjust Volume</li>
+                    </ul>
+                  </ul>
+                  <br/>
+                  <h4>Label:</h4>
+                    <ul class="list-unstyled">
+                      <ul>
+                        <li>
+                          Adjust Closing Price
+                        </li>
+                      </ul>
+                    </ul>
+                  <br>
+                  <hr>
+                  Illustration:
+                  <img src="https://docs.microsoft.com/en-us/azure/machine-learning/media/machine-learning-algorithm-choice/image3.png">
+                  <hr>
+              </div>
+
+              <label class="radio-inline"><input type="radio" name="chosen_learner" value="logistic_learner" data-toggle="collapse" data-target="#intro_logistic_regression">Logistic Regression</label>
+
+              <div id="intro_logistic_regression" class="collapse">
+                <p>
+                  <br/>
+                  <b>Intro to Logistic Regression:</b><br/>
+                  Although it confusingly includes 'regression' in the name, logistic regression is actually a powerful tool for
+                  two-class and multiclass classification. It's fast and simple. The fact that it uses an 'S'-shaped curve instead
+                  of a straight line makes it a natural fit for dividing data into groups. Logistic regression gives linear class boundaries,
+                  so when you use it, make sure a linear approximation is something you can live with.
+                </p>
+                  <br>
+                  <h4>Features used:</h4>
+                  <ul class="list-unstyled">
+                    <ul>
+                      <li><h4>Candle Stick Pattern:</h4> <br/> Example: CDL2CROWS - Two Crows, CDL3BLACKCROWS - Three Black Crows, CDL3INSIDE - Three Inside Up/Down <br>Have a look:
+                        <a href="https://mrjbq7.github.io/ta-lib/func_groups/pattern_recognition.html">TA-Lib (Pattern Recognition)</a>
+                      </li>
+                    </ul>
+                  </ul>
+                  <br/>
+                  <h4>Label:</h4>
+                    <ul class="list-unstyled">
+                      <ul>
+                        <li>
+                          1 or -1 (ie. 1 means the stock moves upward on that day, -1 means the stock moves downward on that day)
+                        </li>
+                      </ul>
+                    </ul>
+                  <br>
+                  <hr>
+                  Illustration:<br>
+                  <img src="https://docs.microsoft.com/en-us/azure/machine-learning/media/machine-learning-algorithm-choice/image4.png">
+                  <hr>
+              </div>
+
+              <label class="radio-inline"><input type="radio" name="chosen_learner" value="knn_learner" data-toggle="collapse" data-target="#intro_knn_regression">knn(k nearest neighbour)</label>
+
+              <div id="intro_knn_regression" class="collapse">
+                <br/>
+                <b>Intro to K-nearest neighbors algorithm:</b><br/>
+                <p>
+                  In pattern recognition, the k-nearest neighbors algorithm (k-NN) is a non-parametric method used for classification and regression.
+                  In both cases, the input consists of the k closest training examples in the feature space.
+                  The output depends on whether k-NN is used for classification or regression:
+                  In k-NN classification, the output is a class membership. An object is classified by a majority vote of its neighbors,
+                  with the object being assigned to the class most common among its k nearest neighbors (k is a positive integer, typically small).
+                  If k = 1, then the object is simply assigned to the class of that single nearest neighbor.
+                  In k-NN regression, the output is the property value for the object. This value is the average of the values of its k nearest neighbors.
+                </p>
+               <br>
+                  <h4>Features used:</h4>
+                  <ul class="list-unstyled">
+                    <ul>
+                      <li><h4>Candle Stick Pattern:</h4> <br/> Example: CDL2CROWS - Two Crows, CDL3BLACKCROWS - Three Black Crows, CDL3INSIDE - Three Inside Up/Down <br>Have a look:
+                        <a href="https://mrjbq7.github.io/ta-lib/func_groups/pattern_recognition.html">TA-Lib (Pattern Recognition)</a>
+                      </li>
+                    </ul>
+                  </ul>
+                  <br/>
+                  <h4>Label:</h4>
+                    <ul class="list-unstyled">
+                      <ul>
+                        <li>
+                          1 or -1 (ie. 1 means the stock moves upward on that day, -1 means the stock moves downward on that day)
+                        </li>
+                      </ul>
+                    </ul>
+                  <br>
+                  <hr>
+                  Illustration:
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/KnnClassification.svg/279px-KnnClassification.svg.png">
+                  <hr>
+              </div>
+
+              <label class="radio-inline"><input type="radio" name="chosen_learner" value="bulk_learner" data-toggle="collapse" data-target="#intro_bulk_learner">Bulk Classifier (DecisionTreeClassifier + RandomForestClassifier + ExtraTreesClassifier + AdaBoostClassifier)</label>
+
+                <div id="intro_bulk_learner" class="collapse">
+                <br/>
+                <b>Intro to Trees, forests, and jungles:</b><br/>
+                <p>
+                  Decision forests (regression, two-class, and multiclass), decision jungles (two-class and multiclass),
+                  and boosted decision trees (regression and two-class) are all based on decision trees, a foundational machine learning concept.
+                  There are many variants of decision trees, but they all do the same thing—subdivide the feature space into regions with mostly the same label.
+                  These can be regions of consistent category or of constant value, depending on whether you are doing classification or regression.
+                </p>
+               <br>
+                  <h4>Features used:</h4>
+                  <ul class="list-unstyled">
+                    <ul>
+                      <li><h4>Candle Stick Pattern:</h4> <br/> Example: CDL2CROWS - Two Crows, CDL3BLACKCROWS - Three Black Crows, CDL3INSIDE - Three Inside Up/Down <br>Have a look:
+                        <a href="https://mrjbq7.github.io/ta-lib/func_groups/pattern_recognition.html">TA-Lib (Pattern Recognition)</a>
+                      </li>
+                    </ul>
+                  </ul>
+                  <br/>
+                  <h4>Label:</h4>
+                    <ul class="list-unstyled">
+                      <ul>
+                        <li>
+                          1 or -1 (ie. 1 means the stock moves upward on that day, -1 means the stock moves downward on that day)
+                        </li>
+                      </ul>
+                    </ul>
+                  <br>
+                  <hr>
+                  Illustration:
+                  <img src="https://docs.microsoft.com/en-us/azure/machine-learning/media/machine-learning-algorithm-choice/image5.png">
+                  <hr>
+              </div>
+
+            </div>
+          </div>
+
+        </form>
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <p>Copy Right</p>
+</footer>
+
+</body>
+</html>
